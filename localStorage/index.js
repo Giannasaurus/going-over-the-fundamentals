@@ -5,6 +5,8 @@ const wall = document.getElementById("thoughtsWall")
 let thoughts = localStorage.getItem("local_thoughts") ? JSON.parse(localStorage.getItem("local_thoughts")) : []
 
 function renderThoughts() {
+    console.log("re-rendered")
+    
     wall.innerHTML = ""
     
     thoughts.forEach((thought) => {
@@ -12,6 +14,11 @@ function renderThoughts() {
         p.textContent = thought
         wall.appendChild(p)
     })
+    
+    const clearButton = document.getElementById("clearButton")
+    clearButton.style.display = thoughts.length > 0 ? "inline-block" : "none"
+    
+    console.log(thoughts)
 }
 
 function addToWall() {
@@ -25,10 +32,19 @@ function addToWall() {
     renderThoughts()
 }
 
+function clearAll() {
+    console.clear()
+    thoughts = []
+    localStorage.removeItem("local_thoughts")
+    renderThoughts()
+}
+
 postButton.addEventListener("click", () => addToWall())
 
 document.addEventListener("keydown", (e) => {
     if (e.key === 'Enter') addToWall()
 })
+
+document.getElementById("clearButton").addEventListener("click", () => clearAll())
 
 renderThoughts()
